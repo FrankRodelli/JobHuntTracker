@@ -1,7 +1,9 @@
-﻿using JobHuntTracker.Models;
+﻿ using JobHuntTracker.Models;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +11,13 @@ namespace JobHuntTrackerLibrary
 {
     public class DataAccess
     {
+        public HttpClient Initial()
+        {
+            var Client = new HttpClient();
+            Client.BaseAddress = new Uri("https://fantasygridiron.azurewebsites.net/");
+            return Client;
+        }
+        //mongo pw is PGt30PSGSqJ9
         public static List<JobModel> GetJobModels()
         {
             List<JobModel> jobs = new List<JobModel>();
@@ -20,7 +29,6 @@ namespace JobHuntTrackerLibrary
                 JobDescription = "This is the description of the job",
                 ContactEmail = "testemails@mail.com",
                 ContactPhoneNumber =  "727-727-7272",
-                Applied = false
             });
             jobs.Add(new JobModel
             {
@@ -30,9 +38,9 @@ namespace JobHuntTrackerLibrary
                 JobDescription = "This is the new description of the job",
                 ContactEmail = "newtestemails@mail.com",
                 ContactPhoneNumber = "696-969-6969",
-                Applied = true
             });
 
+            OpenConnectio();
             return jobs;
         }
 
@@ -42,8 +50,7 @@ namespace JobHuntTrackerLibrary
             string companyDescription,
             string jobDescription,
             string contactEmail,
-            string contactPhoneNumber,
-            bool applied)
+            string contactPhoneNumber)
         {
             jobs.Add(new JobModel
             {
@@ -53,10 +60,20 @@ namespace JobHuntTrackerLibrary
                 JobDescription = jobDescription,
                 ContactEmail = contactEmail,
                 ContactPhoneNumber = contactPhoneNumber,
-                Applied = applied
             });
 
             return jobs;
+        }
+
+        private static void OpenConnectio()
+        {
+
+            var client = new MongoClient("mongodb+srv://admin:<password>@jobhunttrackercluster.3pngf.mongodb.net/<dbname>?retryWrites=true&w=majority");
+            var database = client.GetDatabase("JobHuntTracker");
+
+            List<JobModel> jobs = (List<JobModel>)database.GetCollection<JobModel>("Jobs");
+            Console.WriteLine(jobs);
+
         }
     }
 }

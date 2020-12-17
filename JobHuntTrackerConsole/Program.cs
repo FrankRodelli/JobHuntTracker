@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JobHuntTracker.Models;
 using JobHuntTrackerLibrary;
+using MongoDB.Driver;
 
 namespace JobHuntTrackerConsole
 {
@@ -13,6 +14,8 @@ namespace JobHuntTrackerConsole
             List<JobModel> jobs = LoadJobs();
 
             DisplayMenu(jobs);
+
+
 
         }
 
@@ -61,7 +64,6 @@ namespace JobHuntTrackerConsole
         private static List<JobModel> AddJob(List<JobModel> jobs)
         {
             string n, u, d, j, e, p;
-            bool applied = false;
             Console.WriteLine("Enter Compnay Name: ");
             n = Console.ReadLine();
             Console.WriteLine("Enter Compnay URL: ");
@@ -75,12 +77,13 @@ namespace JobHuntTrackerConsole
             Console.WriteLine("Enter Contact Phone Number: ");
             p = Console.ReadLine();
 
-            applied = verifySelection();
 
             Console.WriteLine();
-            return DataAccess.AddJob(jobs,n,u,d,j,e,p,applied);
+            return DataAccess.AddJob(jobs,n,u,d,j,e,p);
         }
 
+        //This could be useful in the future for 
+        //verifying selection; may want to simplify it and make it more dry for future use
         private static bool verifySelection()
         {
             bool validSelection = false;
