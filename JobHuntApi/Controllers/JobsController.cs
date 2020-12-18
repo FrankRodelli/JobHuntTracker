@@ -1,14 +1,14 @@
-﻿using JobHuntTrackerAPI.Models;
-using JobHuntTrackerLibraryAPI.Services;
+﻿using JobHuntApi.Models;
+using JobHuntApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace JobHuntTrackerAPI.Controllers
+namespace JobHuntApi.Controllers
 {
-    [Route("/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class JobsController : ControllerBase
     {
@@ -20,13 +20,11 @@ namespace JobHuntTrackerAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<JobModel>> Get()
-        {
-            return _jobService.Get();
-        }
+        public ActionResult<List<Job>> Get() =>
+            _jobService.Get();
 
-        [HttpGet("{id}", Name = "GetJob")]
-        public ActionResult<JobModel> Get(string id)
+        [HttpGet("{id:length(24)}", Name = "GetJob")]
+        public ActionResult<Job> Get(string id)
         {
             var job = _jobService.Get(id);
 
@@ -39,15 +37,15 @@ namespace JobHuntTrackerAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<JobModel> Create(JobModel job)
+        public ActionResult<Job> Create(Job job)
         {
             _jobService.Create(job);
 
-            return CreatedAtRoute("GetJob", new { id = job.Id.ToString() }, job);
+            return CreatedAtRoute("GetBook", new { id = job.Id.ToString() }, job);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, JobModel jobIn)
+        [HttpPut("{id:length(24)}")]
+        public IActionResult Update(string id, Job jobIn)
         {
             var job = _jobService.Get(id);
 
@@ -61,7 +59,7 @@ namespace JobHuntTrackerAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
             var job = _jobService.Get(id);

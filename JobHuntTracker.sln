@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntTrackerLibrary", "Jo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobHuntTrackerConsole", "JobHuntTrackerConsole\JobHuntTrackerConsole.csproj", "{1870F92B-4FB8-445B-9030-BE57070A1027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntTrackerAPI", "JobHuntTrackerAPI\JobHuntTrackerAPI.csproj", "{42AA502D-0E3D-4BA6-B936-5041A71D7B87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntApi", "JobHuntApi\JobHuntApi.csproj", "{12D95D38-75BA-471C-820D-47CD02DF8C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{1870F92B-4FB8-445B-9030-BE57070A1027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1870F92B-4FB8-445B-9030-BE57070A1027}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1870F92B-4FB8-445B-9030-BE57070A1027}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42AA502D-0E3D-4BA6-B936-5041A71D7B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42AA502D-0E3D-4BA6-B936-5041A71D7B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42AA502D-0E3D-4BA6-B936-5041A71D7B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42AA502D-0E3D-4BA6-B936-5041A71D7B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12D95D38-75BA-471C-820D-47CD02DF8C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12D95D38-75BA-471C-820D-47CD02DF8C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12D95D38-75BA-471C-820D-47CD02DF8C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12D95D38-75BA-471C-820D-47CD02DF8C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

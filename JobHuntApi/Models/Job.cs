@@ -2,11 +2,12 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace JobHuntTrackerAPI.Models
+namespace JobHuntApi.Models
 {
-    public class JobModel
+    public class Job
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -27,6 +28,5 @@ namespace JobHuntTrackerAPI.Models
         //Status Props
         public string InterviewNotes { get; set; }
         public string EngagementStage { get; set; }
-        
     }
 }

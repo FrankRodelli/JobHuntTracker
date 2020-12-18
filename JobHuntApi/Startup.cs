@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using JobHuntApi.Models;
+using JobHuntApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,12 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
-namespace JobHuntTrackerAPI
+namespace JobHuntApi
 {
     public class Startup
     {
@@ -25,6 +28,14 @@ namespace JobHuntTrackerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JobHuntTrackerDatabaseSettings>(
+                Configuration.GetSection(nameof(JobHuntTrackerDatabaseSettings)));
+
+            services.AddSingleton<IJobHuntTrackerDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<JobHuntTrackerDatabaseSettings>>().Value);
+
+            services.AddSingleton<JobService>();
+
             services.AddControllers();
         }
 
