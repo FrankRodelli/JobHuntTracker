@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using JobHuntTracker.Models;
 using JobHuntTrackerLibrary;
 using MongoDB.Driver;
@@ -8,17 +9,30 @@ namespace JobHuntTrackerConsole
 {
     class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //Populate Job array
-            List<JobModel> jobs = LoadJobs();
+            //List<Job> jobs = LoadJobs();
 
-            DisplayMenu(jobs);
+            //DisplayMenu(jobs);
+            DataAccess data = new DataAccess();
 
+            List <Job> jobs = new List<Job>();
+            jobs = await data.GetJobs();
 
+            foreach(Job j in jobs)
+            {
+                Console.WriteLine($"The Company is {j.CompanyName} and they are " +
+                    $"{j.CompanyDescription}. Their URL is {j.CompanyURL}\n" +
+                    $"The job title is {j.JobTitle} and the job description is {j.JobDescription}\n\n" +
+                    $"Contact Info:\n{j.ContactEmail}\n{j.ContactPhoneNumber}\n{j.ContactName}\n\n" +
+                    $"Interview Notes: {j.InterviewNotes}\nEngagement Stage: {j.EngagementStage}\n\n");
+            }
+
+            Console.ReadLine();
 
         }
-
+/*
         private static void DisplayMenu(List<JobModel> jobs)
         {
             bool validSelection = false;
@@ -117,6 +131,6 @@ namespace JobHuntTrackerConsole
         private static List<JobModel> LoadJobs()
         {
             return DataAccess.GetJobModels();
-        }
+        }*/
     }
 }

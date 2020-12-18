@@ -1,5 +1,8 @@
 ﻿ using JobHuntTracker.Models;
+using JobHuntTrackerLibrary.Helper;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,69 +14,52 @@ namespace JobHuntTrackerLibrary
 {
     public class DataAccess
     {
-        public HttpClient Initial()
-        {
-            var Client = new HttpClient();
-            Client.BaseAddress = new Uri("https://fantasygridiron.azurewebsites.net/");
-            return Client;
-        }
-        //mongo pw is PGt30PSGSqJ9
-        public static List<JobModel> GetJobModels()
-        {
-            List<JobModel> jobs = new List<JobModel>();
-            jobs.Add(new JobModel
-            {
-                CompanyName = "test",
-                CompanyURL = "testurl.com",
-                CompanyDescription = "This is the description of the compnay",
-                JobDescription = "This is the description of the job",
-                ContactEmail = "testemails@mail.com",
-                ContactPhoneNumber =  "727-727-7272",
-            });
-            jobs.Add(new JobModel
-            {
-                CompanyName = "newtest",
-                CompanyURL = "newtesturl.com",
-                CompanyDescription = "This is the new description of the compnay",
-                JobDescription = "This is the new description of the job",
-                ContactEmail = "newtestemails@mail.com",
-                ContactPhoneNumber = "696-969-6969",
-            });
+        JobHuntTrackerAPIHelper _api = new JobHuntTrackerAPIHelper();
+        List<Job> jobList;
 
-            OpenConnectio();
-            return jobs;
+        public async Task<List<Job>> GetJobs()
+        {
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.GetAsync("api/jobs/");
+            if (res.IsSuccessStatusCode)
+            {
+                var result = res.Content.ReadAsStringAsync().Result;
+                jobList = JsonConvert.DeserializeObject<List<Job>>(result);
+            }
+
+            return jobList;
         }
 
-        public static List<JobModel> AddJob(List<JobModel> jobs,
+        public static void AddJob(List<Job> jobs,
             string compnayName,
             string companyURL,
             string companyDescription,
+            string jobTitle,
             string jobDescription,
             string contactEmail,
-            string contactPhoneNumber)
+            string contactPhoneNumber,
+            string ContactName,
+            string interviewNotes,
+            string engagementStage
+            )
         {
-            jobs.Add(new JobModel
+            Job job = (new Job
             {
                 CompanyName = compnayName,
                 CompanyURL = companyURL,
                 CompanyDescription = companyDescription,
+                JobTitle = jobTitle,
                 JobDescription = jobDescription,
                 ContactEmail = contactEmail,
                 ContactPhoneNumber = contactPhoneNumber,
+                ContactName = ContactName,
+                InterviewNotes = interviewNotes,
+                EngagementStage = engagementStage
             });
 
-            return jobs;
-        }
+            //We will send this job object to the API to be added to the database here
 
-        private static void OpenConnectio()
-        {
-
-            var client = new MongoClient("mongodb+srv://admin:<password>@jobhunttrackercluster.3pngf.mongodb.net/<dbname>?retryWrites=true&w=majority");
-            var database = client.GetDatabase("JobHuntTracker");
-
-            List<JobModel> jobs = (List<JobModel>)database.GetCollection<JobModel>("Jobs");
-            Console.WriteLine(jobs);
-
+            Console.WriteLine(job);
         }
     }
 }
