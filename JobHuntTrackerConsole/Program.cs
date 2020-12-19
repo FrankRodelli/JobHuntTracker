@@ -9,31 +9,24 @@ namespace JobHuntTrackerConsole
 {
     class Program
     {
+        static List<Job> jobs;
+        static DataAccess dataAccess;
         public static async Task Main(string[] args)
         {
-            //Populate Job array
-            //List<Job> jobs = LoadJobs();
+            dataAccess = new DataAccess();
 
-            //DisplayMenu(jobs);
-            DataAccess data = new DataAccess();
+            //Populate Job list
+            await LoadJobs();
 
-            List <Job> jobs = new List<Job>();
-            jobs = await data.GetJobs();
+            await DisplayMenu();
 
-            foreach(Job j in jobs)
-            {
-                Console.WriteLine($"The Company is {j.CompanyName} and they are " +
-                    $"{j.CompanyDescription}. Their URL is {j.CompanyURL}\n" +
-                    $"The job title is {j.JobTitle} and the job description is {j.JobDescription}\n\n" +
-                    $"Contact Info:\n{j.ContactEmail}\n{j.ContactPhoneNumber}\n{j.ContactName}\n\n" +
-                    $"Interview Notes: {j.InterviewNotes}\nEngagement Stage: {j.EngagementStage}\n\n");
-            }
+            
 
             Console.ReadLine();
 
         }
-/*
-        private static void DisplayMenu(List<JobModel> jobs)
+
+        private static async Task DisplayMenu()
         {
             bool validSelection = false;
             do
@@ -48,11 +41,11 @@ namespace JobHuntTrackerConsole
                 {
                     if (menuSelection == "1")
                     {
-                        jobs = AddJob(jobs);
+                        await AddJob();
                     }
                     else
                     {
-                        DisplayJobs(jobs);
+                        await DisplayJobs();
                     }
                     validSelection = true;
                 }
@@ -62,21 +55,27 @@ namespace JobHuntTrackerConsole
                 }
             } while (!validSelection);
 
-            DisplayMenu(jobs);
+            await DisplayMenu();
         }
 
-        private static void DisplayJobs(List<JobModel> jobs)
+        private static async Task DisplayJobs()
         {
-            foreach(JobModel job in jobs)
+            foreach (Job j in jobs)
             {
-                Console.WriteLine($"{job.CompanyName}");
+                Console.WriteLine($"The Company is {j.CompanyName} and they are " +
+                    $"{j.CompanyDescription}. Their URL is {j.CompanyURL}\n" +
+                    $"The job title is {j.JobTitle} and the job description is {j.JobDescription}\n\n" +
+                    $"Contact Info:\n{j.ContactEmail}\n{j.ContactPhoneNumber}\n{j.ContactName}\n\n" +
+                    $"Interview Notes: {j.InterviewNotes}\nEngagement Stage: {j.EngagementStage}\n\n");
             }
             Console.WriteLine();
-            DisplayMenu(jobs);
+            await DisplayMenu();
         }
 
-        private static List<JobModel> AddJob(List<JobModel> jobs)
+        private static async Task AddJob()
         {
+            //Adjust this here to return a job model instead of each variable. It'll clean things up
+            Job newJob = new Job();
             string n, u, d, j, e, p;
             Console.WriteLine("Enter Compnay Name: ");
             n = Console.ReadLine();
@@ -93,7 +92,7 @@ namespace JobHuntTrackerConsole
 
 
             Console.WriteLine();
-            return DataAccess.AddJob(jobs,n,u,d,j,e,p);
+            await dataAccess.AddJob(newJob);
         }
 
         //This could be useful in the future for 
@@ -128,9 +127,9 @@ namespace JobHuntTrackerConsole
             return applied;
         }
 
-        private static List<JobModel> LoadJobs()
+        private static async Task LoadJobs()
         {
-            return DataAccess.GetJobModels();
-        }*/
+            jobs = await dataAccess.GetJobs();
+        }
     }
 }

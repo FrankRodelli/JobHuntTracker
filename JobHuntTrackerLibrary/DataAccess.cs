@@ -30,36 +30,11 @@ namespace JobHuntTrackerLibrary
             return jobList;
         }
 
-        public static void AddJob(List<Job> jobs,
-            string compnayName,
-            string companyURL,
-            string companyDescription,
-            string jobTitle,
-            string jobDescription,
-            string contactEmail,
-            string contactPhoneNumber,
-            string ContactName,
-            string interviewNotes,
-            string engagementStage
-            )
+        public async Task AddJob(Job job)
         {
-            Job job = (new Job
-            {
-                CompanyName = compnayName,
-                CompanyURL = companyURL,
-                CompanyDescription = companyDescription,
-                JobTitle = jobTitle,
-                JobDescription = jobDescription,
-                ContactEmail = contactEmail,
-                ContactPhoneNumber = contactPhoneNumber,
-                ContactName = ContactName,
-                InterviewNotes = interviewNotes,
-                EngagementStage = engagementStage
-            });
+            //Send the job object to the API here
 
-            //We will send this job object to the API to be added to the database here
-
-            Console.WriteLine(job);
+            Console.WriteLine("Not implemented yet");
         }
     }
 }
