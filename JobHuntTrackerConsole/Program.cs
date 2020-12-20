@@ -67,6 +67,8 @@ namespace JobHuntTrackerConsole
         private static async Task EditJob()
         {
             int jobNumber = 1;
+            Console.WriteLine();
+
             foreach (Job j in jobs)
             {
 
@@ -92,7 +94,6 @@ namespace JobHuntTrackerConsole
                 }
             }
 
-            Console.WriteLine($"The updated job name is {jobSelection.CompanyName}");
             if (!await dataAccess.UpdateJob(jobSelection))
             {
                 Console.WriteLine("Error deleting item from database!");

@@ -27,6 +27,7 @@ namespace JobHuntTrackerLibrary
                 jobList = JsonConvert.DeserializeObject<List<Job>>(result);
             }
 
+            client.Dispose();
             return jobList;
         }
 
@@ -38,6 +39,8 @@ namespace JobHuntTrackerLibrary
             HttpResponseMessage response = await client.PostAsync("api/jobs", new StringContent(
                 new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json"));
 
+            client.Dispose();
+
             //Returns whether operation was successful
             if (response.IsSuccessStatusCode)
             {
@@ -47,6 +50,8 @@ namespace JobHuntTrackerLibrary
             {
                 return false;
             }
+
+            
         }
 
         public async Task<bool> UpdateJob(Job job)
@@ -55,6 +60,8 @@ namespace JobHuntTrackerLibrary
             HttpResponseMessage response = await client.PutAsync("api/jobs/" + job.Id, new StringContent(
                 new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json"));
 
+            client.Dispose();
+
             //Returns whether operation was successful
             if (response.IsSuccessStatusCode)
             {
@@ -64,12 +71,16 @@ namespace JobHuntTrackerLibrary
             {
                 return false;
             }
+
+            
         }
 
         public async Task<bool> DeleteJob(Job job)
         {
             HttpClient client = _api.Initial();
             HttpResponseMessage response = await client.DeleteAsync("api/jobs/" + job.Id);
+
+            client.Dispose();
 
             //Returns whether operation was successful
             if (response.IsSuccessStatusCode)
