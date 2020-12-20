@@ -1,21 +1,23 @@
-﻿using JobHuntTracker.Models;
-using JobHuntTrackerLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using JobHuntTracker.Models;
+using JobHuntTrackerLibrary;
+using WindowsInput;
 
 namespace JobHuntTrackerConsole
 {
     class Program
     {
+        //TODO: This needs exception handling. I don't plan to release this as it is just for developing the API and class library, but it would be nice
         static List<Job> jobs;
         static DataAccess dataAccess;
         public static async Task Main(string[] args)
         {
             dataAccess = new DataAccess();
-
+            await LoadJobs();
             await DisplayMenu();
 
         }
@@ -26,20 +28,30 @@ namespace JobHuntTrackerConsole
             do
             {
                 Console.WriteLine("1. Add New Job\n" +
-                "2. View Jobs\n\n" +
+                "2. View Jobs\n" +
+                "3. Delete Job\n" +
+                "4. Edit Job\n\n"+
                 "Type Selection: ");
 
                 string menuSelection = Console.ReadLine();
 
-                if (menuSelection == "1" || menuSelection == "2")
+                if (menuSelection == "1" || menuSelection == "2" || menuSelection == "3" || menuSelection == "4")
                 {
                     if (menuSelection == "1")
                     {
                         await AddJob();
                     }
-                    else
+                    if (menuSelection == "2")
                     {
                         await DisplayJobs();
+                    }
+                    if(menuSelection == "3")
+                    {
+                        await DeleteJob();
+                    }
+                    if(menuSelection == "4")
+                    {
+                        await EditJob();
                     }
                     validSelection = true;
                 }
@@ -50,6 +62,64 @@ namespace JobHuntTrackerConsole
             } while (!validSelection);
 
             await DisplayMenu();
+        }
+
+        private static async Task EditJob()
+        {
+            int jobNumber = 1;
+            foreach (Job j in jobs)
+            {
+
+                Console.WriteLine($"{jobNumber}. {j.CompanyName}\n");
+                jobNumber += 1;
+            }
+
+            Console.WriteLine("\nWhat job number do you want to edit?: ");
+
+            Job jobSelection = jobs[Int32.Parse(Console.ReadLine()) -1];
+
+            PropertyInfo[] props = typeof(Job).GetProperties();
+
+            InputSimulator inputSim = new InputSimulator();
+
+            foreach(PropertyInfo property in props)
+            {
+                if (property.Name != "Id")
+                {
+                    Console.WriteLine("Press Enter when finished editing..");
+                    inputSim.Keyboard.TextEntry((string)property.GetValue(jobSelection));
+                    property.SetValue(jobSelection, Console.ReadLine());
+                }
+            }
+
+            Console.WriteLine($"The updated job name is {jobSelection.CompanyName}");
+            if (!await dataAccess.UpdateJob(jobSelection))
+            {
+                Console.WriteLine("Error deleting item from database!");
+            }
+
+            await LoadJobs();
+
+        }
+
+        private static async Task DeleteJob()
+        {
+            int jobNumber = 1;
+            foreach(Job j in jobs)
+            {
+
+                Console.WriteLine($"{jobNumber}. {j.CompanyName}\n");
+                jobNumber += 1;
+            }
+
+            Console.WriteLine("\nWhat job number do you want to delete?: ");
+
+            if(!await dataAccess.DeleteJob(jobs[Int32.Parse(Console.ReadLine()) -1 ]))
+            {
+                Console.WriteLine("Error deleting item from database!");
+            }
+
+            await LoadJobs();
         }
 
         private static async Task DisplayJobs()
@@ -71,7 +141,6 @@ namespace JobHuntTrackerConsole
 
         private static async Task AddJob()
         {
-            //TODO: Adjust this here to return a job model instead of each variable. It'll clean things up
             Job newJob = new Job();
             Console.WriteLine("Enter Compnay Name: ");
             newJob.CompanyName = Console.ReadLine();
@@ -96,7 +165,11 @@ namespace JobHuntTrackerConsole
 
             Console.WriteLine();
 
-            await dataAccess.AddJob(newJob);
+            //TODO: Return the status code for more detailed description of what went wrong
+            if(!await dataAccess.AddJob(newJob))
+            {
+                Console.WriteLine("Error adding item to database!");
+            }
         }
 
         //This could be useful in the future for 

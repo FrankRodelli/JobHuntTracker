@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntTrackerXamarin.iOS",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobHuntTrackerXamarin", "JobHuntTrackerXamarin\JobHuntTrackerXamarin\JobHuntTrackerXamarin.csproj", "{D9F6B5A0-FE05-4A7B-AC2D-0D19E59C0AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntTrackerConsole", "JobHuntTrackerConsole-dotnetFramework\JobHuntTrackerConsole.csproj", "{67D2188E-5E9E-4825-AE15-A9F0DA6AD601}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobHuntTrackerConsole", "JobHuntTrackerConsole\JobHuntTrackerConsole.csproj", "{67D2188E-5E9E-4825-AE15-A9F0DA6AD601}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
