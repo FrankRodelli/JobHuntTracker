@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace JobHuntApi.Controllers
 {
+    //TODO: Tokenize API calls to limit access to class library 
     [Route("api/[controller]")]
     [ApiController]
     public class JobsController : ControllerBase
