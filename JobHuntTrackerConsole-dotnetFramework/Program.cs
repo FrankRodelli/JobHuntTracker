@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using JobHuntTracker.Models;
+﻿using JobHuntTracker.Models;
 using JobHuntTrackerLibrary;
-using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace JobHuntTrackerConsole
 {
@@ -15,14 +16,7 @@ namespace JobHuntTrackerConsole
         {
             dataAccess = new DataAccess();
 
-            //Populate Job list
-            await LoadJobs();
-
             await DisplayMenu();
-
-            
-
-            Console.ReadLine();
 
         }
 
@@ -60,6 +54,8 @@ namespace JobHuntTrackerConsole
 
         private static async Task DisplayJobs()
         {
+            await LoadJobs();
+
             foreach (Job j in jobs)
             {
                 Console.WriteLine($"The Company is {j.CompanyName} and they are " +
@@ -68,30 +64,38 @@ namespace JobHuntTrackerConsole
                     $"Contact Info:\n{j.ContactEmail}\n{j.ContactPhoneNumber}\n{j.ContactName}\n\n" +
                     $"Interview Notes: {j.InterviewNotes}\nEngagement Stage: {j.EngagementStage}\n\n");
             }
+
             Console.WriteLine();
             await DisplayMenu();
         }
 
         private static async Task AddJob()
         {
-            //Adjust this here to return a job model instead of each variable. It'll clean things up
+            //TODO: Adjust this here to return a job model instead of each variable. It'll clean things up
             Job newJob = new Job();
-            string n, u, d, j, e, p;
             Console.WriteLine("Enter Compnay Name: ");
-            n = Console.ReadLine();
+            newJob.CompanyName = Console.ReadLine();
             Console.WriteLine("Enter Compnay URL: ");
-            u = Console.ReadLine();
+            newJob.CompanyURL = Console.ReadLine();
             Console.WriteLine("Enter Compnay Description: ");
-            d = Console.ReadLine();
+            newJob.CompanyDescription = Console.ReadLine();
+            Console.WriteLine("Enter Job Title: ");
+            newJob.JobTitle = Console.ReadLine();
             Console.WriteLine("Enter Job Description: ");
-            j = Console.ReadLine();
+            newJob.JobDescription = Console.ReadLine();
             Console.WriteLine("Enter Contact Email: ");
-            e = Console.ReadLine();
+            newJob.ContactEmail = Console.ReadLine();
             Console.WriteLine("Enter Contact Phone Number: ");
-            p = Console.ReadLine();
-
+            newJob.ContactPhoneNumber = Console.ReadLine();
+            Console.WriteLine("Enter Contact Name");
+            newJob.ContactName = Console.ReadLine();
+            Console.WriteLine("Enter Interview Notes: ");
+            newJob.InterviewNotes = Console.ReadLine();
+            Console.WriteLine("Enter Engagement Stage: ");
+            newJob.EngagementStage = Console.ReadLine();
 
             Console.WriteLine();
+
             await dataAccess.AddJob(newJob);
         }
 
