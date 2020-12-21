@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace JobHuntTracker.Models
+namespace JobHuntTrackerLibrary.Models
 {
     public class Job
     {

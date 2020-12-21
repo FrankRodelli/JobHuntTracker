@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using JobHuntTracker.Models;
+using JobHuntTrackerLibrary.Models;
 using JobHuntTrackerLibrary;
 using WindowsInput;
 

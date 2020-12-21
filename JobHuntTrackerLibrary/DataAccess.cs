@@ -1,4 +1,4 @@
-﻿ using JobHuntTracker.Models;
+﻿ using JobHuntTrackerLibrary.Models;
 using JobHuntTrackerLibrary.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
