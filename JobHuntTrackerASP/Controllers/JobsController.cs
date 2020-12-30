@@ -16,13 +16,14 @@ namespace JobHuntTrackerASP.Controllers
         // GET: Jobs
         public ActionResult Index()
         {
-
+            ViewBag.Title = "Jobs";
             return View(GetJobs());
         }
 
         // GET: Jobs/Details/5
         public ActionResult Details(string id)
         {
+            ViewBag.Title = "Details";
             List<Job> jobs = GetJobs();
 
             //Returns job if found by id or nothing
