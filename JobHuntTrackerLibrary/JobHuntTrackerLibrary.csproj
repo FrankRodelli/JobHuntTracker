@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
+    <Compile Include="DataProcessor.cs" />
     <Compile Include="Helper\JobHuntTrackerAPIHelper.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

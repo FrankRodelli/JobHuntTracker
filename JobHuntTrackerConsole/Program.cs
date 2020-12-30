@@ -13,16 +13,14 @@ namespace JobHuntTrackerConsole
     {
         //TODO: This needs exception handling. I don't plan to release this as it is just for developing the API and class library, but it would be nice
         static List<Job> jobs;
-        static DataAccess dataAccess;
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            dataAccess = new DataAccess();
-            await LoadJobs();
-            await DisplayMenu();
+            LoadJobs();
+            DisplayMenu();
 
         }
 
-        private static async Task DisplayMenu()
+        private static void DisplayMenu()
         {
             bool validSelection = false;
             do
@@ -39,19 +37,19 @@ namespace JobHuntTrackerConsole
                 {
                     if (menuSelection == "1")
                     {
-                        await AddJob();
+                        AddJob();
                     }
                     if (menuSelection == "2")
                     {
-                        await DisplayJobs();
+                        DisplayJobs();
                     }
                     if(menuSelection == "3")
                     {
-                        await DeleteJob();
+                        DeleteJob();
                     }
                     if(menuSelection == "4")
                     {
-                        await EditJob();
+                        EditJob();
                     }
                     validSelection = true;
                 }
@@ -61,10 +59,10 @@ namespace JobHuntTrackerConsole
                 }
             } while (!validSelection);
 
-            await DisplayMenu();
+            DisplayMenu();
         }
 
-        private static async Task EditJob()
+        private static void EditJob()
         {
             int jobNumber = 1;
             Console.WriteLine();
@@ -94,16 +92,16 @@ namespace JobHuntTrackerConsole
                 }
             }
 
-            if (!await dataAccess.UpdateJob(jobSelection))
+            if (!DataProcessor.UpdateJob(jobSelection))
             {
                 Console.WriteLine("Error deleting item from database!");
             }
 
-            await LoadJobs();
+            LoadJobs();
 
         }
 
-        private static async Task DeleteJob()
+        private static void DeleteJob()
         {
             int jobNumber = 1;
             foreach(Job j in jobs)
@@ -115,17 +113,17 @@ namespace JobHuntTrackerConsole
 
             Console.WriteLine("\nWhat job number do you want to delete?: ");
 
-            if(!await dataAccess.DeleteJob(jobs[Int32.Parse(Console.ReadLine()) -1 ]))
+            if(!DataProcessor.DeleteJob(jobs[Int32.Parse(Console.ReadLine()) -1 ]))
             {
                 Console.WriteLine("Error deleting item from database!");
             }
 
-            await LoadJobs();
+            LoadJobs();
         }
 
-        private static async Task DisplayJobs()
+        private static void DisplayJobs()
         {
-            await LoadJobs();
+            LoadJobs();
 
             foreach (Job j in jobs)
             {
@@ -137,10 +135,10 @@ namespace JobHuntTrackerConsole
             }
 
             Console.WriteLine();
-            await DisplayMenu();
+            DisplayMenu();
         }
 
-        private static async Task AddJob()
+        private static void AddJob()
         {
             Job newJob = new Job();
             Console.WriteLine("Enter Compnay Name: ");
@@ -167,7 +165,7 @@ namespace JobHuntTrackerConsole
             Console.WriteLine();
 
             //TODO: Return the status code for more detailed description of what went wrong
-            if(!await dataAccess.AddJob(newJob))
+            if(!DataProcessor.AddJob(newJob))
             {
                 Console.WriteLine("Error adding item to database!");
             }
@@ -205,9 +203,10 @@ namespace JobHuntTrackerConsole
             return applied;
         }
 
-        private static async Task LoadJobs()
+        private static void LoadJobs()
         {
-            jobs = await dataAccess.GetJobs();
+            jobs = DataProcessor.LoadJobs();
+            
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿ using JobHuntTrackerLibrary.Models;
+﻿using JobHuntTrackerLibrary.Models;
 using JobHuntTrackerLibrary.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,89 +7,118 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System;
+using System.Data;
 
 namespace JobHuntTrackerLibrary
 {
-    public class DataAccess
+    //made this internal so it doesn't get confused with the data processor class
+    internal static class DataAccess
     {
-        //TODO: Handle exceptions and pass status messages back to caller for detailed reporting/logging in each method
-
-        JobHuntTrackerAPIHelper _api = new JobHuntTrackerAPIHelper();
-        List<Job> jobList;
-
-        public async Task<List<Job>> GetJobs()
+        public static HttpClient Initial()
         {
-            HttpClient client = _api.Initial();
-            HttpResponseMessage response = await client.GetAsync("api/jobs");
-            if (response.IsSuccessStatusCode)
+            var Client = new HttpClient
             {
-                var result = response.Content.ReadAsStringAsync().Result;
-                jobList = JsonConvert.DeserializeObject<List<Job>>(result);
+                BaseAddress = new Uri("https://jobhuntapi.azurewebsites.net/")
+            };
+            return Client;
+        }
+        public static List<T> GetJobs<T>()
+        {
+            using(HttpClient client = Initial())
+            {
+                HttpResponseMessage response = client.GetAsync("api/jobs").GetAwaiter().GetResult();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    client.Dispose();
+                    return JsonConvert.DeserializeObject<List<T>>(result);
+                    
+                }
+                client.Dispose();
+                return null;
             }
-
-            client.Dispose();
-            return jobList;
         }
 
-        public async Task<bool> AddJob(Job job)
+        public static T GetJobs<T>(string Id)
         {
-            HttpClient client = _api.Initial();
-
-            //POST to API
-            HttpResponseMessage response = await client.PostAsync("api/jobs", new StringContent(
-                new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json"));
-
-            client.Dispose();
-
-            //Returns whether operation was successful
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = Initial())
             {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                HttpResponseMessage response = client.GetAsync("api/jobs/" + Id).GetAwaiter().GetResult();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    client.Dispose();
+                    return JsonConvert.DeserializeObject<T>(result);
 
-            
+                }
+                client.Dispose();
+                //Idk how this works tbh
+                return default;
+            }
         }
 
-        public async Task<bool> UpdateJob(Job job)
+        public static bool AddJob<T>(T job)
         {
-            HttpClient client = _api.Initial();
-            HttpResponseMessage response = await client.PutAsync("api/jobs/" + job.Id, new StringContent(
-                new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json"));
 
-            client.Dispose();
-
-            //Returns whether operation was successful
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = Initial())
             {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                //POST to API
+                HttpResponseMessage response = client.PostAsync("api/jobs", new StringContent(
+                    new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json")).GetAwaiter().GetResult();
 
-            
+                client.Dispose();
+
+                //Returns whether operation was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                } 
+            }
         }
 
-        public async Task<bool> DeleteJob(Job job)
+        public static bool UpdateJob<T>(T job, string Id)
         {
-            HttpClient client = _api.Initial();
-            HttpResponseMessage response = await client.DeleteAsync("api/jobs/" + job.Id);
-
-            client.Dispose();
-
-            //Returns whether operation was successful
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = Initial())
             {
-                return true;
-            }
-            else
+                HttpResponseMessage response = client.PutAsync("api/jobs/" + Id, new StringContent(
+                        new JavaScriptSerializer().Serialize(job), Encoding.UTF8, "application/json")).GetAwaiter().GetResult();
+
+                client.Dispose();
+
+                //Returns whether operation was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }           
+        }
+
+        public static bool DeleteJob<T>(T job, string Id)
+        {
+            using (HttpClient client = Initial())
             {
-                return false;
+                HttpResponseMessage response = client.DeleteAsync("api/jobs/" + Id).GetAwaiter().GetResult();
+
+                client.Dispose();
+
+                //Returns whether operation was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                } 
             }
         }
     }

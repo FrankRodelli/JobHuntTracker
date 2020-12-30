@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JobHuntTrackerLibrary.Helper
 {
-    class JobHuntTrackerAPIHelper
+    public class JobHuntTrackerAPIHelper
     {
         public HttpClient Initial()
         {
