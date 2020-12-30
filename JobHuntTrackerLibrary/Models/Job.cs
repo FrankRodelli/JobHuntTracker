@@ -6,7 +6,7 @@ using System.Text;
 
 namespace JobHuntTrackerLibrary.Models
 {
-    public class Job
+    public class Job 
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

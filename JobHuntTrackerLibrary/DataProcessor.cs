@@ -24,8 +24,9 @@ namespace JobHuntTrackerLibrary
             return DataAccess.AddJob<Job>(job);
         }
 
-        public static bool UpdateJob(Job job)
+        public static bool UpdateJob<T>(T newJob)
         {
+            Job job = (Job)Convert.ChangeType(newJob, typeof(Job));
             string Id = job.Id;
             return DataAccess.UpdateJob<Job>(job, Id);
         }
