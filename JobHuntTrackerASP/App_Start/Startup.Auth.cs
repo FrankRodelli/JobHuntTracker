@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using JobHuntTrackerASP.Models;
+using Microsoft.Owin.Security.Twitter;
 
 namespace JobHuntTrackerASP
 {
@@ -50,19 +51,19 @@ namespace JobHuntTrackerASP
             //    clientId: "",
             //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            app.UseTwitterAuthentication(
+            consumerKey: "n4QJUQ0dX5waxfAFi8f3Kppg9",
+            consumerSecret: "mn07rnz4kq1VHSw5cutI4QTKV9IQlBPDk5MrWSuOAx8lAN6cjp");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "425551405231710",
+               appSecret: "7c35b276e464246ae173a867480f4acb");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "734666930173-c98abo3a7rekng0a657vh0uov40ru6ve.apps.googleusercontent.com",
+                ClientSecret = "QZUplybWpovVJRlVcQKw0XdT"
+            });
         }
     }
 }

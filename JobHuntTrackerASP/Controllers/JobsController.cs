@@ -14,6 +14,7 @@ namespace JobHuntTrackerASP.Controllers
     public class JobsController : Controller
     {
         // GET: Jobs
+        [Authorize]
         public ActionResult Index()
         {
             ViewBag.Title = "Jobs";
@@ -21,6 +22,7 @@ namespace JobHuntTrackerASP.Controllers
         }
 
         // GET: Jobs/Details/5
+        [Authorize]
         public ActionResult Details(string id)
         {
             ViewBag.Title = "Details";
@@ -39,12 +41,14 @@ namespace JobHuntTrackerASP.Controllers
         }
 
         // GET: Jobs/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Jobs/Create
+        [Authorize]
         [HttpPost]
         public ActionResult Create(Job job)
         {
@@ -62,9 +66,10 @@ namespace JobHuntTrackerASP.Controllers
             }
             return RedirectToAction("Index");
         }
-    
+
 
         // GET: Jobs/Edit/5
+        [Authorize]
         public ActionResult Edit(string id)
         {
             var row = DataProcessor.LoadJobs(id);
@@ -87,6 +92,7 @@ namespace JobHuntTrackerASP.Controllers
         }
 
         // POST: Jobs/Edit/5
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(Job job)
         {
@@ -106,6 +112,7 @@ namespace JobHuntTrackerASP.Controllers
         }
 
         // GET: Jobs/Delete/5
+        [Authorize]
         public ActionResult Delete(string id)
         {
             var row = DataProcessor.LoadJobs(id);
@@ -128,6 +135,7 @@ namespace JobHuntTrackerASP.Controllers
         }
 
         // POST: Jobs/Delete/5
+        [Authorize]
         [HttpPost]
         public ActionResult Delete(Job job)
         {

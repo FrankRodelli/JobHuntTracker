@@ -21,26 +21,5 @@ namespace JobHuntTrackerASP.Controllers
 
             return View();
         }
-
-        public ActionResult ViewJobs()
-        {
-            ViewBag.Message = "Jobs";
-
-            var data = DataProcessor.LoadJobs();
-
-            List<JobList> jobs = new List<JobList>();
-
-            foreach (var row in data)
-            {
-                jobs.Add(new JobList
-                {
-                    CompanyName = row.CompanyName,
-                    JobTitle = row.JobTitle,
-                    EngagementStage = row.EngagementStage
-                });
-            }
-
-            return View(jobs);
-        }
     }
 }
