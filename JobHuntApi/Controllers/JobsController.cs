@@ -21,13 +21,27 @@ namespace JobHuntApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Job>> Get() =>
-            _jobService.Get();
+        public ActionResult<List<Job>> Get(string id = "0")
+        {
+            if(id == "0")
+            {
+                return _jobService.Get();
+            }
+            else
+            {
+                return _jobService.Get().Where(e => e.UserID == id).ToList();
+            }
+            
+        }
+            
+
+        public ActionResult<List<Job>> GetByUID(string id) =>
+            _jobService.GetByUID(id);
 
         [HttpGet("{id:length(24)}", Name = "GetJob")]
-        public ActionResult<Job> Get(string id)
+        public ActionResult<Job> GetByID(string id)
         {
-            var job = _jobService.Get(id);
+            var job = _jobService.GetByID(id);
 
             if (job == null)
             {
@@ -48,7 +62,7 @@ namespace JobHuntApi.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Job jobIn)
         {
-            var job = _jobService.Get(id);
+            var job = _jobService.GetByID(id);
 
             if (job == null)
             {
@@ -63,7 +77,7 @@ namespace JobHuntApi.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var job = _jobService.Get(id);
+            var job = _jobService.GetByID(id);
 
             if (job == null)
             {

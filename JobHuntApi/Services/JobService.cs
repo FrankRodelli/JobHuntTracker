@@ -22,8 +22,11 @@ namespace JobHuntApi.Services
         public List<Job> Get() =>
             _jobs.Find(job => true).ToList();
 
-        public Job Get(string id) =>
+        public Job GetByID(string id) =>
             _jobs.Find<Job>(job => job.Id == id).FirstOrDefault();
+
+        public List<Job> GetByUID(string id) =>
+            _jobs.Find<Job>(job => job.UserID == id).ToList();
 
         public Job Create(Job job)
         {

@@ -9,6 +9,7 @@ namespace JobHuntTrackerASP.Models
     {
         public string Id { get; set; }
 
+        public string UserID { get; set; }
 
         //Company Description Props
         public string CompanyName { get; set; }

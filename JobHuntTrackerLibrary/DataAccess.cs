@@ -23,11 +23,11 @@ namespace JobHuntTrackerLibrary
             };
             return Client;
         }
-        public static List<T> GetJobs<T>()
+        public static List<T> GetJobs<T>(string id)
         {
             using(HttpClient client = Initial())
             {
-                HttpResponseMessage response = client.GetAsync("api/jobs").GetAwaiter().GetResult();
+                HttpResponseMessage response = client.GetAsync("api/jobs?id="+id).GetAwaiter().GetResult();
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
@@ -40,7 +40,7 @@ namespace JobHuntTrackerLibrary
             }
         }
 
-        public static T GetJobs<T>(string Id)
+        public static T GetJobsByID<T>(string Id)
         {
             using (HttpClient client = Initial())
             {

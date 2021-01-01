@@ -9,14 +9,14 @@ namespace JobHuntTrackerLibrary
 {
     public class DataProcessor
     {
-        public static List<Job> LoadJobs()
+        public static List<Job> LoadJobs(string id)
         {
-            return DataAccess.GetJobs<Job>();
+            return DataAccess.GetJobs<Job>(id);
         }
 
-        public static Job LoadJobs(string Id)
+        public static Job LoadJobsByID(string Id)
         {
-            return DataAccess.GetJobs<Job>(Id);
+            return DataAccess.GetJobsByID<Job>(Id);
         }
 
         public static bool AddJob(Job job)

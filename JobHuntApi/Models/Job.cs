@@ -13,7 +13,7 @@ namespace JobHuntApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-
+        public string UserID { get; set; }
         //Company Description Props
         public string CompanyName { get; set; }
         public string CompanyURL { get; set; }

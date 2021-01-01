@@ -8,17 +8,21 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Microsoft.AspNet.Identity;
 
 namespace JobHuntTrackerASP.Controllers
 {
     public class JobsController : Controller
     {
+
+        //TODO: Use User.Identity.GetUserId() to get user ID and get info from database
+        //TODO: Either change structure of MONGODB to accomodate user ID's or switch to SQL to get relational styles
         // GET: Jobs
         [Authorize]
         public ActionResult Index()
         {
             ViewBag.Title = "Jobs";
-            return View(GetJobs());
+            return View(GetJobs(User.Identity.GetUserId()));
         }
 
         // GET: Jobs/Details/5
@@ -26,18 +30,25 @@ namespace JobHuntTrackerASP.Controllers
         public ActionResult Details(string id)
         {
             ViewBag.Title = "Details";
-            List<Job> jobs = GetJobs();
+            var row = DataProcessor.LoadJobsByID(id);
 
-            //Returns job if found by id or nothing
-            foreach (var testJob in jobs)
+            Job job = new Job
             {
-                if (testJob.Id == id)
-                {
-                    return View(testJob);
-                }
-            }
+                Id = row.Id,
+                UserID = User.Identity.GetUserId(),
+                CompanyName = row.CompanyName,
+                CompanyURL = row.CompanyURL,
+                CompanyDescription = row.CompanyDescription,
+                JobTitle = row.JobTitle,
+                JobDescription = row.JobDescription,
+                ContactEmail = row.ContactEmail,
+                ContactPhoneNumber = row.ContactPhoneNumber,
+                ContactName = row.ContactName,
+                InterviewNotes = row.InterviewNotes,
+                EngagementStage = row.EngagementStage
+            };
 
-            return View();
+            return View(job);
         }
 
         // GET: Jobs/Create
@@ -52,6 +63,7 @@ namespace JobHuntTrackerASP.Controllers
         [HttpPost]
         public ActionResult Create(Job job)
         {
+            job.UserID = User.Identity.GetUserId();
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://jobhuntapi.azurewebsites.net/");
@@ -72,10 +84,11 @@ namespace JobHuntTrackerASP.Controllers
         [Authorize]
         public ActionResult Edit(string id)
         {
-            var row = DataProcessor.LoadJobs(id);
+            var row = DataProcessor.LoadJobsByID(id);
             Job job = new Job
             {
                 Id = row.Id,
+                UserID = User.Identity.GetUserId(),
                 CompanyName = row.CompanyName,
                 CompanyURL = row.CompanyURL,
                 CompanyDescription = row.CompanyDescription,
@@ -96,6 +109,7 @@ namespace JobHuntTrackerASP.Controllers
         [HttpPost]
         public ActionResult Edit(Job job)
         {
+            job.UserID = User.Identity.GetUserId();
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://jobhuntapi.azurewebsites.net/");
@@ -115,10 +129,11 @@ namespace JobHuntTrackerASP.Controllers
         [Authorize]
         public ActionResult Delete(string id)
         {
-            var row = DataProcessor.LoadJobs(id);
+            var row = DataProcessor.LoadJobsByID(id);
             Job job = new Job
             {
                 Id = row.Id,
+                UserID = User.Identity.GetUserId(),
                 CompanyName = row.CompanyName,
                 CompanyURL = row.CompanyURL,
                 CompanyDescription = row.CompanyDescription,
@@ -153,16 +168,17 @@ namespace JobHuntTrackerASP.Controllers
             return RedirectToAction("Index");
         }
 
-        public List<Job> GetJobs()
+        public List<Job> GetJobs(string id)
         {
             List<Job> jobs = new List<Job>();
-            var data = DataProcessor.LoadJobs();
+            var data = DataProcessor.LoadJobs(id);
 
             foreach (var row in data)
             {
                 jobs.Add(new Job
                 {
                     Id = row.Id,
+                    UserID = User.Identity.GetUserId(),
                     CompanyName = row.CompanyName,
                     CompanyURL = row.CompanyURL,
                     CompanyDescription = row.CompanyDescription,
