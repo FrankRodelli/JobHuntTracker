@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Job</h4>
+    <h4>@Html.DisplayFor(model => model.CompanyName)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -23,7 +23,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CompanyURL)
+            <a href="@Html.DisplayFor(model => model.CompanyURL)">@Html.DisplayFor(model => model.CompanyURL)</a>
         </dd>
 
         <dt>
@@ -63,7 +63,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ContactPhoneNumber)
+            <a href="tel:+1@Html.DisplayFor(model => model.ContactPhoneNumber)">@Html.DisplayFor(model => model.ContactPhoneNumber)</a>
         </dd>
 
         <dt>
