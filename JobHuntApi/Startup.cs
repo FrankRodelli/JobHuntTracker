@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JobHuntApi.Models;
 using JobHuntApi.Services;
+using JobHuntApi.Services.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,9 @@ namespace JobHuntApi
                 sp.GetRequiredService<IOptions<JobHuntTrackerDatabaseSettings>>().Value);
 
             services.AddSingleton<JobService>();
+
+            services.AddTransient<ICommand, Command>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddControllers();
         }
