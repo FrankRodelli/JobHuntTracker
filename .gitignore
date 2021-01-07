@@ -3,6 +3,7 @@
 ###################
 *.com
 appsettings.json
+Web.config
 *.class
 *.dll
 *.exe
