@@ -22,12 +22,25 @@ namespace JobHuntTrackerASP.Models
         [Display(Name = "Company Description")]
         public string CompanyDescription { get; set; }
 
+        [Display(Name = "Company Location")]
+        public string CompanyLocation { get; set; }
+
         //Job Description Props
         [Display(Name = "Job Title")]
         public string JobTitle { get; set; }
 
         [Display(Name = "Job Description")]
         public string JobDescription { get; set; }
+
+        [Display(Name = "Job Type")]
+        public string JobType { get; set; }
+
+        [Display(Name = "Pay")]
+        [DataType(DataType.Currency)]
+        public string Pay { get; set; }
+
+        [Display(Name = "Pay Type")]
+        public string PayType { get; set; }
 
         //Contact Props
         [DataType(DataType.EmailAddress)]
@@ -43,10 +56,39 @@ namespace JobHuntTrackerASP.Models
 
         //Status Props
         [Display(Name = "Interview Notes")]
+        [DataType(DataType.MultilineText)]
         public string InterviewNotes { get; set; }
+
+        [Display(Name = "Personal Notes")]
+        [DataType(DataType.MultilineText)]
+        public string PersonalNotes { get; set; }
 
         [Display(Name = "Engagement Stage")]
         public string EngagementStage { get; set; }
 
     }
+}
+
+public enum PayType
+{
+    Salary,
+    Hourly
+}
+
+public enum JobType
+{
+    Contract,
+    PartTime,
+    FullTime
+}
+
+public enum EngagementStage
+{
+    Applied,
+    Interviewing,
+    NotSelected,
+    OfferedPosition,
+    Hired,
+    
+
 }

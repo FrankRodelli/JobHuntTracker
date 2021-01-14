@@ -5,7 +5,14 @@
 <div class="jumbotron">
     <h1>Job Hunt Tracker</h1>
     <p class="lead">Tool to help stay organized during the job hunt.</p>
-    <p><a href="/Account/Register" class="btn btn-primary btn-lg">Sign Up &raquo;</a></p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.Partial("_LoggedInWelcome")
+    }
+    else
+    {
+        @Html.Partial("_LoggedOutWelcome")
+    }
 </div>
 
 <div class="row">

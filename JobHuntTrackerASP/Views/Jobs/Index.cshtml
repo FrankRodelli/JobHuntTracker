@@ -1,46 +1,49 @@
 ﻿@model IEnumerable<JobHuntTrackerASP.Models.Job>
-@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Jobs</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Company Name
-        </th>
-        <th>
-            Job Title
-        </th>
-        <th>
-            Engagement Stage
-        </th>
-        <th></th>
-    </tr>
+<h2>Index</h2>
 
-    @foreach (var item in Model)
-    {
-        <tr onclick="location.href = '@(Url.Action("Details", "Jobs", new { id = item.Id }))'">
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngagementStage)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.CompanyName)*@
+                @Html.ActionLink("Company Name", "Index", new { sortOrder = "Company Name"})
+            </th>
+            <th>
+                @Html.ActionLink("Job Title", "Index", new { sortOrder = "Job Title" })
+                @*@Html.DisplayNameFor(model => model.JobTitle)*@
+            </th>
+            <th>
+                @Html.ActionLink("Engagement Stage", "Index", new { sortOrder = "Engagement Stage" })
+                @*@Html.DisplayNameFor(model => model.EngagementStage)*@
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr onclick = "location.href = '@(Url.Action("Details", "Jobs", new { id = item.Id }))'" >
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobTitle)
+                </td>
+               <td>
+                    @Html.DisplayFor(modelItem => item.EngagementStage)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
